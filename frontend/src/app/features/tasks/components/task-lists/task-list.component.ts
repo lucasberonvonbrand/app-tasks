@@ -18,7 +18,7 @@ export class TaskListComponent implements OnInit {
 
   // Paginado
   currentPage: number = 1;
-  pageSize: number = 5; // Cantidad de tareas por página
+  pageSize: number = 4;
 
   isLoading: boolean = true;
   connectionError: boolean = false;
