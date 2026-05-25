@@ -1,6 +1,6 @@
 # Fullstack Task Manager - Dockerized Environment 🐳
 
-Este repositorio aloja un entorno de desarrollo listo para producción, estructurado sobre una arquitectura **multi-contenedor completamente automatizado**. El objetivo principal de este proyecto no radica en la complejidad del código del frontend o backend, sino en **demostrar la integración, orquestación, optimización de infraestructura y persistencia de datos** utilizando herramientas de contenerización moderna.
+Este repositorio aloja un entorno de desarrollo listo para producción, estructurado sobre una arquitectura **multi-contenedor completamente automatizada**. El objetivo principal de este proyecto no radica en la complejidad del código del frontend o backend, sino en **demostrar la integración, orquestación, optimización de infraestructura y persistencia de datos** utilizando herramientas de contenerización moderna.
 
 A través de un único archivo de orquestación, el sistema levanta de forma coordinada una Single Page Application, una API REST y un motor de base de datos relacional evitando cualquier tipo de instalación o configuración nativa en la máquina anfitriona.
 
