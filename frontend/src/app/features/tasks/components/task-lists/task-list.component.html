@@ -1,0 +1,57 @@
+<div class="task-container">
+  <h2>Lista de Tareas</h2>
+
+  <div class="task-form">
+    <h3>{{ isEditing ? 'Editar Tarea' : 'Nueva Tarea' }}</h3>
+    <input type="text" [(ngModel)]="currentTask.title" placeholder="Título de la tarea" />
+    <input type="text" [(ngModel)]="currentTask.description" placeholder="Descripción (opcional)" />
+    <button (click)="saveTask()" [disabled]="!currentTask.title">
+      {{ isEditing ? 'Actualizar' : 'Crear' }}
+    </button>
+    <button *ngIf="isEditing" (click)="resetForm()">Cancelar</button>
+  </div>
+
+  <!-- Mensajes de estado -->
+  <div *ngIf="isLoading" class="status-message">
+    <p>⏳ Conectando con el servidor...</p>
+  </div>
+  <div *ngIf="connectionError" class="status-message error">
+    <p>❌ No se pudo conectar al servidor. Es posible que siga iniciando.</p>
+    <button (click)="loadTasks()" class="retry-btn">Reintentar</button>
+  </div>
+
+  <ul *ngIf="!isLoading && !connectionError && tasks.length > 0; else noTasks">
+    <li *ngFor="let task of paginatedTasks">
+      <span [class.completed-text]="task.completed">
+        <strong>{{ task.title }}</strong> - {{ task.description || 'Sin descripción' }}
+      </span>
+      <div class="actions">
+        <button (click)="toggleComplete(task)">{{ task.completed ? 'Desmarcar' : 'Completar' }}</button>
+        <button (click)="editTask(task)">Editar</button>
+        <button class="delete-btn" (click)="confirmDelete(task.id)">Eliminar</button>
+      </div>
+    </li>
+  </ul>
+  <ng-template #noTasks>
+    <p *ngIf="!isLoading && !connectionError">No hay tareas disponibles. ¡Crea una nueva!</p>
+  </ng-template>
+
+  <!-- Controles de Paginación -->
+  <div class="pagination" *ngIf="tasks.length > pageSize">
+    <button (click)="prevPage()" [disabled]="currentPage === 1">Anterior</button>
+    <span>Página {{ currentPage }} de {{ totalPages }}</span>
+    <button (click)="nextPage()" [disabled]="currentPage === totalPages">Siguiente</button>
+  </div>
+
+  <!-- Modal de confirmación para eliminar -->
+  <div class="modal-overlay" *ngIf="showDeleteModal">
+    <div class="modal-content">
+      <h3>¿Estás seguro?</h3>
+      <p>Esta acción eliminará la tarea de forma permanente y no se puede deshacer.</p>
+      <div class="modal-actions">
+        <button class="cancel-btn" (click)="closeDeleteModal()">Cancelar</button>
+        <button class="confirm-btn" (click)="deleteTask()">Sí, eliminar</button>
+      </div>
+    </div>
+  </div>
+</div>

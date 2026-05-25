@@ -1,0 +1,19 @@
+# Variables de entorno (¡Contraseñas y secretos!)
+.env
+
+# Frontend (Angular / Node.js)
+frontend/node_modules/
+frontend/dist/
+frontend/.angular/
+
+# Backend (Spring Boot / Maven)
+backend/target/
+*.jar
+
+# Editores e IDEs (VS Code, IntelliJ, Eclipse)
+.vscode/
+.idea/
+*.iml
+
+# Archivos del sistema operativo
+.DS_Store

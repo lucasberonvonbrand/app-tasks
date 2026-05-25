@@ -1,0 +1,246 @@
+.task-container {
+  max-width: 700px;
+  margin: 40px auto;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #334155;
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+  border: 1px solid #f1f5f9;
+}
+
+h2 {
+  color: #0f172a;
+  margin-top: 0;
+  border-bottom: 2px solid #e2e8f0;
+  padding-bottom: 15px;
+  margin-bottom: 25px;
+}
+
+.task-form {
+  background-color: #f8fafc;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 30px;
+  border: 1px solid #e2e8f0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.task-form h3 {
+  width: 100%;
+  margin: 0 0 10px 0;
+  color: #475569;
+  font-size: 1.1rem;
+}
+
+.task-form input {
+  flex: 1 1 200px;
+  padding: 10px 15px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 14px;
+  outline: none;
+  transition: all 0.2s;
+}
+
+.task-form input:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+button {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s ease;
+  color: white;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.task-form button:nth-of-type(1) {
+  background-color: #3b82f6;
+}
+.task-form button:nth-of-type(1):hover:not(:disabled) {
+  background-color: #2563eb;
+}
+
+.task-form button:nth-of-type(2) {
+  background-color: #94a3b8;
+}
+.task-form button:nth-of-type(2):hover {
+  background-color: #64748b;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+li {
+  padding: 16px 20px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  background-color: #ffffff;
+  transition: all 0.2s;
+}
+
+li:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  border-color: #cbd5e1;
+}
+
+li > span {
+  flex: 1;
+  line-height: 1.4;
+}
+
+.completed-text {
+  text-decoration: line-through;
+  color: #94a3b8;
+  opacity: 0.8;
+}
+
+/* Botones de acción dentro de la lista */
+.actions {
+  display: flex;
+  gap: 8px;
+}
+
+.actions button {
+  padding: 8px 12px;
+  font-size: 13px;
+}
+
+.actions button:nth-child(1) {
+  background-color: #10b981; /* Verde */
+}
+.actions button:nth-child(1):hover {
+  background-color: #059669;
+}
+
+.actions button:nth-child(2) {
+  background-color: #f59e0b; /* Amarillo */
+}
+.actions button:nth-child(2):hover {
+  background-color: #d97706;
+}
+
+.actions button.delete-btn {
+  background-color: #ef4444; /* Rojo */
+}
+.actions button.delete-btn:hover {
+  background-color: #dc2626;
+}
+
+/* Paginación */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  margin-top: 25px;
+}
+
+.pagination button {
+  background-color: #f1f5f9;
+  color: #475569;
+}
+
+.pagination button:hover:not(:disabled) {
+  background-color: #e2e8f0;
+}
+
+.pagination span {
+  font-size: 14px;
+  font-weight: 500;
+  color: #64748b;
+}
+
+/* Modal de Eliminación */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(15, 23, 42, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(3px);
+}
+
+.modal-content {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  max-width: 400px;
+  width: 90%;
+}
+
+.modal-content p {
+  color: #475569;
+  margin-bottom: 25px;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.modal-actions .cancel-btn {
+  background-color: #94a3b8;
+}
+.modal-actions .cancel-btn:hover {
+  background-color: #64748b;
+}
+
+.modal-actions .confirm-btn {
+  background-color: #ef4444;
+}
+.modal-actions .confirm-btn:hover {
+  background-color: #dc2626;
+}
+
+/* Mensajes de estado (Carga y Error) */
+.status-message {
+  text-align: center;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  color: #475569;
+}
+
+.status-message.error {
+  background-color: #fef2f2;
+  color: #ef4444;
+  border-color: #fecaca;
+}
+
+.retry-btn {
+  margin-top: 10px;
+  background-color: #3b82f6;
+}
