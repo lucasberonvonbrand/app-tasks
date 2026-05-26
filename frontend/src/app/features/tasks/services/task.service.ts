@@ -13,7 +13,7 @@ export class TaskService {
 
   getTasks(): Observable<Task[]> {
     return this.http.get<Task[]>(this.apiUrl).pipe(
-      retry({ count: 3, delay: 2000 }) // Reintenta 3 veces si el backend está iniciando
+      retry({ count: 6, delay: 1000 })
     );
   }
 
