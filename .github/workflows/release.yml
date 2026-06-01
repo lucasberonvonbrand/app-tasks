@@ -5,6 +5,9 @@ on:
     tags:
       - 'v*' # Se ejecuta solo al pushear un tag como v1.0.0
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 permissions:
   contents: write # Necesario para crear releases
 
