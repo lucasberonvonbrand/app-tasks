@@ -24,8 +24,8 @@ services:
   backend:
     image: tasks-backend:1.0
     build:
-      context: ./backend
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: backend/Dockerfile
     ports:
       - "8080:8080"
     env_file:
