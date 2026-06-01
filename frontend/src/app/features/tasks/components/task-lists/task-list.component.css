@@ -376,4 +376,18 @@ li > span {
     padding: 8px 12px;
     font-size: 13px;
   }
+
+  .filters {
+    display: block;
+    white-space: nowrap;
+  }
+
+  .filters span {
+    display: block;
+    margin-bottom: 10px;
+  }
+
+  .filters button {
+    margin-right: 8px;
+  }
 }
