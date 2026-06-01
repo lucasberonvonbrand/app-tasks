@@ -8,7 +8,7 @@ on:
 
 jobs:
   test-backend:
-    name: Test Backend (Java/Spring Boot)
+    name: Backend (Test & Verify)
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -27,7 +27,7 @@ jobs:
         run: mvn -B -DskipTests=false clean verify
 
   build-frontend:
-    name: Build Frontend (Angular)
+    name: Frontend (Build)
     runs-on: ubuntu-latest
     defaults:
       run:
