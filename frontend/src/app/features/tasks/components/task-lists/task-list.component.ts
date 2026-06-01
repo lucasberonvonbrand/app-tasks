@@ -16,6 +16,9 @@ export class TaskListComponent implements OnInit {
   currentTask: Task = { title: '', description: '', completed: false };
   isEditing: boolean = false;
 
+  // Filtro
+  currentFilter: 'ALL' | 'PENDING' | 'COMPLETED' = 'ALL';
+
   // Paginado
   currentPage: number = 1;
   pageSize: number = 4;
@@ -54,13 +57,24 @@ export class TaskListComponent implements OnInit {
     });
   }
 
+  get filteredTasks(): Task[] {
+    if (this.currentFilter === 'PENDING') return this.tasks.filter(t => !t.completed);
+    if (this.currentFilter === 'COMPLETED') return this.tasks.filter(t => t.completed);
+    return this.tasks;
+  }
+
   get paginatedTasks(): Task[] {
     const startIndex = (this.currentPage - 1) * this.pageSize;
-    return this.tasks.slice(startIndex, startIndex + this.pageSize);
+    return this.filteredTasks.slice(startIndex, startIndex + this.pageSize);
   }
 
   get totalPages(): number {
-    return Math.ceil(this.tasks.length / this.pageSize);
+    return Math.ceil(this.filteredTasks.length / this.pageSize);
+  }
+
+  setFilter(filter: 'ALL' | 'PENDING' | 'COMPLETED'): void {
+    this.currentFilter = filter;
+    this.currentPage = 1; // Volver a la página 1 al filtrar
   }
 
   saveTask(): void {

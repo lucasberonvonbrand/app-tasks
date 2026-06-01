@@ -20,7 +20,14 @@
     <button (click)="loadTasks()" class="retry-btn">Reintentar</button>
   </div>
 
-  <ul *ngIf="!isLoading && !connectionError && tasks.length > 0; else noTasks">
+  <!-- Filtros -->
+  <div class="filters" *ngIf="!isLoading && !connectionError && tasks.length > 0">
+    <button [class.active]="currentFilter === 'ALL'" (click)="setFilter('ALL')">Todas</button>
+    <button [class.active]="currentFilter === 'PENDING'" (click)="setFilter('PENDING')">Pendientes</button>
+    <button [class.active]="currentFilter === 'COMPLETED'" (click)="setFilter('COMPLETED')">Completadas</button>
+  </div>
+
+  <ul *ngIf="!isLoading && !connectionError && filteredTasks.length > 0; else noTasks">
     <li *ngFor="let task of paginatedTasks">
       <span [class.completed-text]="task.completed">
         <strong>{{ task.title }}</strong> - {{ task.description || 'Sin descripción' }}
@@ -33,11 +40,11 @@
     </li>
   </ul>
   <ng-template #noTasks>
-    <p *ngIf="!isLoading && !connectionError">No hay tareas disponibles. ¡Crea una nueva!</p>
+    <p *ngIf="!isLoading && !connectionError">No hay tareas para mostrar en esta vista.</p>
   </ng-template>
 
   <!-- Controles de Paginación -->
-  <div class="pagination" *ngIf="tasks.length > pageSize">
+  <div class="pagination" *ngIf="filteredTasks.length > pageSize">
     <button (click)="prevPage()" [disabled]="currentPage === 1">Anterior</button>
     <span>Página {{ currentPage }} de {{ totalPages }}</span>
     <button (click)="nextPage()" [disabled]="currentPage === totalPages">Siguiente</button>

@@ -82,6 +82,26 @@ button:disabled {
   background-color: #64748b;
 }
 
+/* Filtros */
+.filters {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  justify-content: center;
+}
+
+.filters button {
+  background-color: #f1f5f9;
+  color: #475569;
+}
+.filters button:hover {
+  background-color: #e2e8f0;
+}
+.filters button.active {
+  background-color: #8b5cf6;
+  color: white;
+}
+
 ul {
   list-style-type: none;
   padding: 0;
