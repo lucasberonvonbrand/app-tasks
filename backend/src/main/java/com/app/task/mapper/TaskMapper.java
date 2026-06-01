@@ -15,7 +15,8 @@ public class TaskMapper {
         return new Task(
                 dto.getTitle(),
                 dto.getDescription(),
-                dto.isCompleted()
+                dto.isCompleted(),
+                dto.getPriority()
         );
     }
 
@@ -27,7 +28,8 @@ public class TaskMapper {
                 entity.getId(),
                 entity.getTitle(),
                 entity.getDescription(),
-                entity.isCompleted()
+                entity.isCompleted(),
+                entity.getPriority()
         );
     }
 }

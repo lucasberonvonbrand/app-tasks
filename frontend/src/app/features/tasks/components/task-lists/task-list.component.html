@@ -1,10 +1,19 @@
 <div class="task-container">
   <h2>Lista de Tareas</h2>
 
+  <div class="demo-banner">
+    <p>👋 <strong>¡Hola!</strong> Este es un entorno público de demostración. Siéntete libre de crear, editar o completar tareas para probar la latencia y la base de datos, pero por favor sé respetuoso con el contenido.</p>
+  </div>
+
   <div class="task-form">
     <h3>{{ isEditing ? 'Editar Tarea' : 'Nueva Tarea' }}</h3>
     <input type="text" [(ngModel)]="currentTask.title" placeholder="Título de la tarea" />
     <input type="text" [(ngModel)]="currentTask.description" placeholder="Descripción (opcional)" />
+    <select [(ngModel)]="currentTask.priority" class="priority-select">
+      <option value="LOW">Prioridad: Baja</option>
+      <option value="MEDIUM">Prioridad: Media</option>
+      <option value="HIGH">Prioridad: Alta</option>
+    </select>
     <button (click)="saveTask()" [disabled]="!currentTask.title">
       {{ isEditing ? 'Actualizar' : 'Crear' }}
     </button>
@@ -21,15 +30,28 @@
   </div>
 
   <!-- Filtros -->
-  <div class="filters" *ngIf="!isLoading && !connectionError && tasks.length > 0">
-    <button [class.active]="currentFilter === 'ALL'" (click)="setFilter('ALL')">Todas</button>
-    <button [class.active]="currentFilter === 'PENDING'" (click)="setFilter('PENDING')">Pendientes</button>
-    <button [class.active]="currentFilter === 'COMPLETED'" (click)="setFilter('COMPLETED')">Completadas</button>
+  <div class="filters-container" *ngIf="!isLoading && !connectionError && tasks.length > 0">
+    <div class="filters">
+      <span>Estado:</span>
+      <button [class.active]="currentFilter === 'ALL'" (click)="setFilter('ALL')">Todas</button>
+      <button [class.active]="currentFilter === 'PENDING'" (click)="setFilter('PENDING')">Pendientes</button>
+      <button [class.active]="currentFilter === 'COMPLETED'" (click)="setFilter('COMPLETED')">Completadas</button>
+    </div>
+    <div class="filters">
+      <span>Prioridad:</span>
+      <button [class.active]="currentPriorityFilter === 'ALL'" (click)="setPriorityFilter('ALL')">Todas</button>
+      <button [class.active]="currentPriorityFilter === 'HIGH'" (click)="setPriorityFilter('HIGH')">Alta</button>
+      <button [class.active]="currentPriorityFilter === 'MEDIUM'" (click)="setPriorityFilter('MEDIUM')">Media</button>
+      <button [class.active]="currentPriorityFilter === 'LOW'" (click)="setPriorityFilter('LOW')">Baja</button>
+    </div>
   </div>
 
   <ul *ngIf="!isLoading && !connectionError && filteredTasks.length > 0; else noTasks">
-    <li *ngFor="let task of paginatedTasks">
+    <li *ngFor="let task of paginatedTasks; trackBy: trackByTaskId">
       <span [class.completed-text]="task.completed">
+        <span class="priority-badge" [ngClass]="'priority-' + (task.priority || 'MEDIUM')">
+          {{ task.priority === 'HIGH' ? 'Alta' : task.priority === 'LOW' ? 'Baja' : 'Media' }}
+        </span>
         <strong>{{ task.title }}</strong> - {{ task.description || 'Sin descripción' }}
       </span>
       <div class="actions">

@@ -1,6 +1,7 @@
 package com.app.task.controller;
 
 import com.app.task.dto.TaskRequestDto;
+import com.app.task.model.TaskPriority;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,7 @@ public class TaskControllerIntegrationTest {
     @Test
     public void createTask_shouldReturnCreatedTask() throws Exception {
         // Arrange
-        TaskRequestDto taskRequestDto = new TaskRequestDto("Test Integration Task", "A description for the task", false);
+        TaskRequestDto taskRequestDto = new TaskRequestDto("Test Integration Task", "A description for the task", false, TaskPriority.MEDIUM);
         String taskJson = objectMapper.writeValueAsString(taskRequestDto);
 
         // Act & Assert

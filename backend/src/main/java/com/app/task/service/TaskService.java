@@ -40,6 +40,7 @@ public class TaskService {
             task.setTitle(taskDetails.getTitle());
             task.setDescription(taskDetails.getDescription());
             task.setCompleted(taskDetails.isCompleted());
+            task.setPriority(taskDetails.getPriority());
             Task updatedTask = taskRepository.save(task);
             return taskMapper.toResponseDto(updatedTask);
         }).orElseThrow(() -> new TaskNotFoundException("Tarea no encontrada con id: " + id));

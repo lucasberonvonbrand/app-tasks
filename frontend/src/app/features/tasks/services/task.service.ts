@@ -7,7 +7,8 @@ import { Task } from '../../../core/models/task.model';
   providedIn: 'root'
 })
 export class TaskService {
-  private apiUrl = 'https://app-tasks-backend.onrender.com/api/tasks';
+  // private apiUrl = 'https://app-tasks-backend.onrender.com/api/tasks';
+  private apiUrl = 'http://localhost:8080/api/tasks';
 
   constructor(private http: HttpClient) { }
 

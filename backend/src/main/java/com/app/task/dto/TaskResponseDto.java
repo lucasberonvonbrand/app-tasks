@@ -1,18 +1,22 @@
 package com.app.task.dto;
 
+import com.app.task.model.TaskPriority;
+
 public class TaskResponseDto {
     private Long id;
     private String title;
     private String description;
     private boolean completed;
+    private TaskPriority priority;
 
     public TaskResponseDto() {}
 
-    public TaskResponseDto(Long id, String title, String description, boolean completed) {
+    public TaskResponseDto(Long id, String title, String description, boolean completed, TaskPriority priority) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.completed = completed;
+        this.priority = priority;
     }
 
     public Long getId() { return id; }
@@ -26,4 +30,7 @@ public class TaskResponseDto {
 
     public boolean isCompleted() { return completed; }
     public void setCompleted(boolean completed) { this.completed = completed; }
+
+    public TaskPriority getPriority() { return priority; }
+    public void setPriority(TaskPriority priority) { this.priority = priority; }
 }

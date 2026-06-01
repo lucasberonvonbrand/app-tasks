@@ -12,13 +12,16 @@ public class Task {
     private String title;
     private String description;
     private boolean completed;
+    @Enumerated(EnumType.STRING)
+    private TaskPriority priority;
 
     public Task() {}
 
-    public Task(String title, String description, boolean completed) {
+    public Task(String title, String description, boolean completed, TaskPriority priority) {
         this.title = title;
         this.description = description;
         this.completed = completed;
+        this.priority = priority;
     }
 
     public Long getId() { return id; }
@@ -32,4 +35,7 @@ public class Task {
 
     public boolean isCompleted() { return completed; }
     public void setCompleted(boolean completed) { this.completed = completed; }
+
+    public TaskPriority getPriority() { return priority; }
+    public void setPriority(TaskPriority priority) { this.priority = priority; }
 }

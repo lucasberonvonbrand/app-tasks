@@ -13,11 +13,12 @@ import { Task } from '../../../../core/models/task.model';
 })
 export class TaskListComponent implements OnInit {
   tasks: Task[] = [];
-  currentTask: Task = { title: '', description: '', completed: false };
+  currentTask: Task = { title: '', description: '', completed: false, priority: 'MEDIUM' };
   isEditing: boolean = false;
 
   // Filtro
   currentFilter: 'ALL' | 'PENDING' | 'COMPLETED' = 'ALL';
+  currentPriorityFilter: 'ALL' | 'LOW' | 'MEDIUM' | 'HIGH' = 'ALL';
 
   // Paginado
   currentPage: number = 1;
@@ -36,8 +37,10 @@ export class TaskListComponent implements OnInit {
     this.loadTasks();
   }
 
-  loadTasks(): void {
-    this.isLoading = true;
+  loadTasks(showLoading: boolean = true): void {
+    if (showLoading) {
+      this.isLoading = true;
+    }
     this.connectionError = false;
 
     this.taskService.getTasks().subscribe({
@@ -58,9 +61,16 @@ export class TaskListComponent implements OnInit {
   }
 
   get filteredTasks(): Task[] {
-    if (this.currentFilter === 'PENDING') return this.tasks.filter(t => !t.completed);
-    if (this.currentFilter === 'COMPLETED') return this.tasks.filter(t => t.completed);
-    return this.tasks;
+    let filtered = this.tasks;
+
+    if (this.currentFilter === 'PENDING') filtered = filtered.filter(t => !t.completed);
+    if (this.currentFilter === 'COMPLETED') filtered = filtered.filter(t => t.completed);
+
+    if (this.currentPriorityFilter !== 'ALL') {
+      filtered = filtered.filter(t => (t.priority || 'MEDIUM') === this.currentPriorityFilter);
+    }
+
+    return filtered;
   }
 
   get paginatedTasks(): Task[] {
@@ -77,15 +87,20 @@ export class TaskListComponent implements OnInit {
     this.currentPage = 1; // Volver a la página 1 al filtrar
   }
 
+  setPriorityFilter(filter: 'ALL' | 'LOW' | 'MEDIUM' | 'HIGH'): void {
+    this.currentPriorityFilter = filter;
+    this.currentPage = 1;
+  }
+
   saveTask(): void {
     if (this.isEditing && this.currentTask.id) {
       this.taskService.updateTask(this.currentTask.id, this.currentTask).subscribe({
-        next: () => { this.loadTasks(); this.resetForm(); },
+        next: () => { this.loadTasks(false); this.resetForm(); },
         error: (err: any) => console.error('Error al actualizar', err)
       });
     } else {
       this.taskService.createTask(this.currentTask).subscribe({
-        next: () => { this.loadTasks(); this.resetForm(); },
+        next: () => { this.loadTasks(false); this.resetForm(); },
         error: (err: any) => console.error('Error al crear', err)
       });
     }
@@ -94,13 +109,14 @@ export class TaskListComponent implements OnInit {
   editTask(task: Task): void {
     this.currentTask = { ...task };
     this.isEditing = true;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   deleteTask(): void {
     if (this.taskToDeleteId) {
       this.taskService.deleteTask(this.taskToDeleteId).subscribe({
         next: () => {
-          this.loadTasks();
+          this.loadTasks(false);
           this.closeDeleteModal();
         },
         error: (err: any) => console.error('Error al eliminar', err)
@@ -112,14 +128,14 @@ export class TaskListComponent implements OnInit {
     if (task.id) {
       const updatedTask = { ...task, completed: !task.completed };
       this.taskService.updateTask(task.id, updatedTask).subscribe({
-        next: () => this.loadTasks(),
+        next: () => this.loadTasks(false),
         error: (err: any) => console.error('Error al actualizar estado', err)
       });
     }
   }
 
   resetForm(): void {
-    this.currentTask = { title: '', description: '', completed: false };
+    this.currentTask = { title: '', description: '', completed: false, priority: 'MEDIUM' };
     this.isEditing = false;
   }
 
@@ -141,5 +157,10 @@ export class TaskListComponent implements OnInit {
   closeDeleteModal(): void {
     this.showDeleteModal = false;
     this.taskToDeleteId = undefined;
+  }
+
+  // Optimización de renderizado para evitar saltos en la vista
+  trackByTaskId(index: number, task: Task): number | undefined {
+    return task.id;
   }
 }
