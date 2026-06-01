@@ -1,0 +1,61 @@
+name: Continuous Delivery (Release)
+
+on:
+  push:
+    tags:
+      - 'v*' # Se ejecuta solo al pushear un tag como v1.0.0
+
+permissions:
+  contents: write # Necesario para crear releases
+
+jobs:
+  delivery:
+    name: Build & Push Docker Images and Create Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # --- BACKEND BUILD ---
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Build Backend JAR
+        working-directory: ./backend
+        run: mvn -B -DskipTests=false clean package
+
+      # --- FRONTEND BUILD ---
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: './frontend/package-lock.json'
+
+      - name: Install Frontend Dependencies
+        working-directory: ./frontend
+        run: npm ci
+
+      - name: Build Frontend
+        working-directory: ./frontend
+        run: npm run build
+
+      - name: Zip Frontend Build
+        working-directory: ./frontend
+        run: zip -r frontend-build.zip dist/
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: "app-tasks ${{ github.ref_name }}"
+          body: "Release generado automáticamente desde GitHub Actions."
+          files: |
+            backend/target/*.jar
+            frontend/frontend-build.zip
+          draft: false
+          prerelease: false
