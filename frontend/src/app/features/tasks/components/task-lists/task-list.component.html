@@ -8,7 +8,7 @@
   <div class="task-form">
     <h3>{{ isEditing ? 'Editar Tarea' : 'Nueva Tarea' }}</h3>
     <input type="text" [(ngModel)]="currentTask.title" placeholder="Título de la tarea" />
-    <input type="text" [(ngModel)]="currentTask.description" placeholder="Descripción (opcional)" />
+    <textarea [(ngModel)]="currentTask.description" placeholder="Descripción (opcional)" rows="2"></textarea>
     <select [(ngModel)]="currentTask.priority" class="priority-select">
       <option value="LOW">Prioridad: Baja</option>
       <option value="MEDIUM">Prioridad: Media</option>

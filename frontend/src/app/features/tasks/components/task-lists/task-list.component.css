@@ -54,6 +54,7 @@ h2 {
 }
 
 .task-form input,
+.task-form textarea,
 .task-form select.priority-select {
   flex: 1 1 200px;
   padding: 10px 15px;
@@ -65,9 +66,16 @@ h2 {
 }
 
 .task-form input:focus,
+.task-form textarea:focus,
 .task-form select.priority-select:focus {
   border-color: #3b82f6;
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+.task-form textarea {
+  flex: 1 1 100%;
+  resize: vertical;
+  font-family: inherit;
 }
 
 button {
@@ -116,18 +124,32 @@ button:disabled {
   display: flex;
   gap: 10px;
   align-items: center;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  padding-bottom: 5px;
+}
+
+.filters::-webkit-scrollbar {
+  height: 4px;
+}
+.filters::-webkit-scrollbar-thumb {
+  background-color: #cbd5e1;
+  border-radius: 4px;
 }
 
 .filters span {
   font-size: 14px;
   font-weight: 600;
   color: #64748b;
-  width: 70px;
+  min-width: 70px;
+  flex-shrink: 0;
 }
 
 .filters button {
   background-color: #f1f5f9;
   color: #475569;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 .filters button:hover {
   background-color: #e2e8f0;
@@ -201,6 +223,7 @@ li > span {
 .actions {
   display: flex;
   gap: 8px;
+  flex-wrap: wrap;
 }
 
 .actions button {
@@ -323,4 +346,34 @@ li > span {
 .retry-btn {
   margin-top: 10px;
   background-color: #3b82f6;
+}
+
+/* --- Responsive (Mobile) --- */
+@media (max-width: 600px) {
+  .task-container {
+    margin: 15px;
+    padding: 15px;
+  }
+
+  li {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .actions {
+    width: 100%;
+    gap: 6px;
+  }
+
+  .actions button {
+    flex: 1;
+    padding: 6px 4px;
+    font-size: 12px;
+  }
+
+  .modal-actions button {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
 }
