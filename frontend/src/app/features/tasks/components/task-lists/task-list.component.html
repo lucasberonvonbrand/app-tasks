@@ -81,14 +81,19 @@
   <!-- Modal de confirmación para eliminar -->
   <div class="modal-overlay" *ngIf="showDeleteModal">
     <div class="modal-content">
-      <h3>¿Estás seguro?</h3>
-      <p>Esta acción eliminará la tarea de forma permanente y no se puede deshacer.</p>
-      <div class="modal-actions">
-        <button class="cancel-btn" (click)="closeDeleteModal()" [disabled]="isDeleting">Cancelar</button>
-        <button class="confirm-btn" (click)="deleteTask()" [disabled]="isDeleting">
-          {{ isDeleting ? 'Eliminando...' : 'Sí, eliminar' }}
-        </button>
-      </div>
+      <ng-container *ngIf="!isDeleting">
+        <h3>¿Estás seguro?</h3>
+        <p>Esta acción eliminará la tarea de forma permanente y no se puede deshacer.</p>
+        <div class="modal-actions">
+          <button class="cancel-btn" (click)="closeDeleteModal()">Cancelar</button>
+          <button class="confirm-btn" (click)="deleteTask()">Sí, eliminar</button>
+        </div>
+      </ng-container>
+
+      <ng-container *ngIf="isDeleting">
+        <h3 style="color: #ef4444;">⏳ Eliminando tarea...</h3>
+        <p>Aguardando respuesta del servidor.</p>
+      </ng-container>
     </div>
   </div>
 </div>
