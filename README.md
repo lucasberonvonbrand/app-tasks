@@ -63,6 +63,7 @@ Los contenedores están diseñados bajo la premisa de ser efímeros. Para cumpli
   * **Pruebas Unitarias (Capa de Servicio)**: Uso de `JUnit 5` y `Mockito` para aislar `TaskService` simulando el acceso a datos. Valida exhaustivamente la lógica de negocio y el manejo de excepciones personalizadas (como `TaskNotFoundException`).
   * **Pruebas de Integración (Capa HTTP)**: Uso de `@SpringBootTest` y `MockMvc` para levantar el contexto de Spring, simular peticiones reales (ej. `POST /api/tasks`) y verificar de extremo a extremo los códigos de estado (ej. `201 Created`) y el mapeo correcto de JSON.
 * **Despliegue Cloud Ininterrumpido**: Una vez que el código supera las métricas de calidad, GitHub Actions coordina el despliegue automático hacia los servidores de **Render** (API y Frontend), enlazándose de manera segura con la base de datos alojada en **Aiven**.
+* **Continuous Delivery (Releases Automatizados)**: La creación de una etiqueta versionada en Git (ej. `v1.0.0`) dispara un pipeline secundario (`release.yml`) que compila el código fuente y genera automáticamente una Release pública en GitHub, adjuntando los artefactos binarios finales (JAR y ZIP) listos para su descarga y ejecución en cualquier entorno.
 
 ## 🚀 Instrucciones de Despliegue Rápido
 
