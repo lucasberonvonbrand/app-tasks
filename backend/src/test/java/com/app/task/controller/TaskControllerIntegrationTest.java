@@ -34,7 +34,7 @@ public class TaskControllerIntegrationTest {
         mockMvc.perform(post("/api/tasks")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(taskJson))
-                .andExpect(status().isBadRequest()) // Test roto a propósito (debería ser isCreated)
-                .andExpect(MockMvcResultMatchers.jsonPath("$.title").value("FALLO INTENCIONAL"));
+                .andExpect(status().isCreated())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.title").value("Test Integration Task"));
     }
 }
