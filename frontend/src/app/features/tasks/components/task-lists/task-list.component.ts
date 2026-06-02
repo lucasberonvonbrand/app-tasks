@@ -15,6 +15,8 @@ export class TaskListComponent implements OnInit {
   tasks: Task[] = [];
   currentTask: Task = { title: '', description: '', completed: false, priority: 'MEDIUM' };
   isEditing: boolean = false;
+  isSaving: boolean = false;
+  isDeleting: boolean = false;
 
   // Filtro
   currentFilter: 'ALL' | 'PENDING' | 'COMPLETED' = 'ALL';
@@ -93,15 +95,24 @@ export class TaskListComponent implements OnInit {
   }
 
   saveTask(): void {
+    this.isSaving = true;
     if (this.isEditing && this.currentTask.id) {
       this.taskService.updateTask(this.currentTask.id, this.currentTask).subscribe({
-        next: () => { this.loadTasks(false); this.resetForm(); },
-        error: (err: any) => console.error('Error al actualizar', err)
+        next: () => {
+          this.loadTasks(false);
+          this.resetForm();
+          this.isSaving = false;
+        },
+        error: (err: any) => { console.error('Error al actualizar', err); this.isSaving = false; }
       });
     } else {
       this.taskService.createTask(this.currentTask).subscribe({
-        next: () => { this.loadTasks(false); this.resetForm(); },
-        error: (err: any) => console.error('Error al crear', err)
+        next: () => {
+          this.loadTasks(false);
+          this.resetForm();
+          this.isSaving = false;
+        },
+        error: (err: any) => { console.error('Error al crear', err); this.isSaving = false; }
       });
     }
   }
@@ -114,12 +125,14 @@ export class TaskListComponent implements OnInit {
 
   deleteTask(): void {
     if (this.taskToDeleteId) {
+      this.isDeleting = true;
       this.taskService.deleteTask(this.taskToDeleteId).subscribe({
         next: () => {
           this.loadTasks(false);
           this.closeDeleteModal();
+          this.isDeleting = false;
         },
-        error: (err: any) => console.error('Error al eliminar', err)
+        error: (err: any) => { console.error('Error al eliminar', err); this.isDeleting = false; }
       });
     }
   }
@@ -148,6 +161,16 @@ export class TaskListComponent implements OnInit {
     if (this.currentPage > 1) this.currentPage--;
   }
 
+  get pageNumbers(): number[] {
+    return Array.from({ length: this.totalPages }, (_, i) => i + 1);
+  }
+
+  goToPage(page: number): void {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+    }
+  }
+
   // Controles del Modal
   confirmDelete(id: number | undefined): void {
     this.taskToDeleteId = id;
@@ -157,6 +180,7 @@ export class TaskListComponent implements OnInit {
   closeDeleteModal(): void {
     this.showDeleteModal = false;
     this.taskToDeleteId = undefined;
+    this.isDeleting = false;
   }
 
   // Optimización de renderizado para evitar saltos en la vista

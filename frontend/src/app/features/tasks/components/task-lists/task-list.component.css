@@ -270,10 +270,20 @@ li > span {
   background-color: #e2e8f0;
 }
 
-.pagination span {
-  font-size: 14px;
-  font-weight: 500;
-  color: #64748b;
+.page-numbers {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.page-numbers button {
+  min-width: 38px;
+}
+
+.page-numbers button.active {
+  background-color: #3b82f6;
+  color: white;
 }
 
 /* Modal de Eliminación */
@@ -389,5 +399,13 @@ li > span {
 
   .filters button {
     margin-right: 8px;
+  }
+
+  .pagination {
+    flex-wrap: wrap;
+  }
+
+  .page-numbers button {
+    padding: 6px 10px;
   }
 }

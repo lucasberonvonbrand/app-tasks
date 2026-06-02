@@ -14,7 +14,7 @@ export class TaskService {
 
   getTasks(): Observable<Task[]> {
     return this.http.get<Task[]>(this.apiUrl).pipe(
-      retry({ count: 6, delay: 1000 })
+      retry({ count: 30, delay: 4000 }) // Soporta hasta 120 segs de Cold Start en Render
     );
   }
 

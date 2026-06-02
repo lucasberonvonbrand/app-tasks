@@ -14,8 +14,8 @@
       <option value="MEDIUM">Prioridad: Media</option>
       <option value="HIGH">Prioridad: Alta</option>
     </select>
-    <button (click)="saveTask()" [disabled]="!currentTask.title">
-      {{ isEditing ? 'Actualizar' : 'Crear' }}
+    <button (click)="saveTask()" [disabled]="!currentTask.title || isSaving">
+      {{ isSaving ? 'Guardando...' : (isEditing ? 'Actualizar' : 'Crear') }}
     </button>
     <button *ngIf="isEditing" (click)="resetForm()">Cancelar</button>
   </div>
@@ -68,7 +68,13 @@
   <!-- Controles de Paginación -->
   <div class="pagination" *ngIf="filteredTasks.length > pageSize">
     <button (click)="prevPage()" [disabled]="currentPage === 1">Anterior</button>
-    <span>Página {{ currentPage }} de {{ totalPages }}</span>
+    <div class="page-numbers">
+      <button *ngFor="let page of pageNumbers"
+              (click)="goToPage(page)"
+              [class.active]="currentPage === page">
+        {{ page }}
+      </button>
+    </div>
     <button (click)="nextPage()" [disabled]="currentPage === totalPages">Siguiente</button>
   </div>
 
@@ -78,8 +84,10 @@
       <h3>¿Estás seguro?</h3>
       <p>Esta acción eliminará la tarea de forma permanente y no se puede deshacer.</p>
       <div class="modal-actions">
-        <button class="cancel-btn" (click)="closeDeleteModal()">Cancelar</button>
-        <button class="confirm-btn" (click)="deleteTask()">Sí, eliminar</button>
+        <button class="cancel-btn" (click)="closeDeleteModal()" [disabled]="isDeleting">Cancelar</button>
+        <button class="confirm-btn" (click)="deleteTask()" [disabled]="isDeleting">
+          {{ isDeleting ? 'Eliminando...' : 'Sí, eliminar' }}
+        </button>
       </div>
     </div>
   </div>
