@@ -1,8 +1,11 @@
-# Fullstack Task Manager - Dockerized Environment 🐳
+# Fullstack Task Manager - Docker & CI/CD Pipeline 🐳🚀
 
-Este repositorio aloja un entorno de desarrollo listo para producción, estructurado sobre una arquitectura **multi-contenedor completamente automatizada**. El objetivo principal de este proyecto no radica en la complejidad del código del frontend o backend, sino en **demostrar la integración, orquestación, optimización de infraestructura y persistencia de datos** utilizando herramientas de contenerización moderna.
+🚀 **[¡Prueba la aplicación en producción aquí!](https://app-tasks-frontend.onrender.com)**
+*(Nota: Al estar desplegada en una capa gratuita, la aplicación puede tardar hasta 2 minutos en "despertar" tras un período de inactividad. ¡Gracias por la paciencia!)*
 
-A través de un único archivo de orquestación, el sistema levanta de forma coordinada una Single Page Application, una API REST y un motor de base de datos relacional evitando cualquier tipo de instalación o configuración nativa en la máquina anfitriona.
+Este repositorio aloja un entorno de desarrollo y producción automatizado, estructurado sobre una arquitectura **multi-contenedor** y respaldado por un **flujo de Integración y Despliegue Continuo (CI/CD)**. El objetivo principal del proyecto es demostrar conocimientos en orquestación de infraestructura, automatización de pruebas y despliegues seguros en la nube.
+
+A través de Docker, el sistema levanta localmente una SPA, una API REST y un motor relacional. En la nube, un pipeline automatiza el testing y despliegue del proyecto hacia entornos administrados como **Render** y **Aiven**.
 
 ---
 
@@ -12,6 +15,10 @@ El repositorio mantiene un diseño desacoplado y ordenado para facilitar el cont
 
 ```text
 app-tasks/
+│
+├── .github/workflows/    # Pipelines de automatización (GitHub Actions)
+│   ├── ci-cd.yml         # Flujo principal de CI/CD (Testing y Despliegue)
+│   └── release.yml       # Flujo de creación y versionado de releases
 │
 ├── backend/              # Microservicio API REST (Java 21 + Spring Boot)
 │   ├── src/              # Código fuente estructurado por capas
@@ -33,7 +40,7 @@ El entorno está compuesto por tres tecnologías clave integradas a través de D
 
 * **Frontend (Angular 19 & Nginx)**: Una SPA moderna que utiliza el nuevo flujo de reactividad basado en Signals. El entorno productivo se sirve mediante un servidor Nginx Alpine ligero.
 * **Backend (Java 21 & Spring Boot 3)**: Una API con arquitectura clásica por capas (Controlador, Servicio, Repositorio, Modelo) que expone endpoints REST securizados contra políticas de CORS.
-* **Persistencia (MySQL 8.0)**: El motor relacional encargado de salvaguardar las entidades de negocio del sistema.
+* **Persistencia (MySQL 8.0)**: El motor relacional encargado de salvaguardar las entidades de negocio del sistema. En producción, se utiliza un clúster de base de datos gestionado en la nube provisionado a través de **Aiven**.
 
 ## 🛠️ Pilares de Infraestructura y Buenas Prácticas Aplicadas
 
@@ -50,7 +57,16 @@ Los contenedores están diseñados bajo la premisa de ser efímeros. Para cumpli
 * **Inyección de Credenciales (.env)**: Toda la configuración crítica (claves de root, nombres de esquemas, credenciales de JPA y URLs de conexión de Spring) se administra dinámicamente en tiempo de ejecución extrayendo los valores de un archivo `.env` local.
 * **Control de Recursos Corporativos**: Se delimitaron techos de hardware estrictos (limits de CPU y Memoria RAM) para el contenedor de Java, garantizando que el consumo de la JVM jamás desestabilice el sistema anfitrión.
 
+### 4. Integración y Despliegue Continuo (CI/CD) y Testing Automatizado
+* **Pipeline con GitHub Actions**: Cada evento de tipo `push` hacia la rama principal dispara un flujo de trabajo automatizado en la nube.
+* **Testing Automatizado (Gatekeepers)**: La fase de compilación del Backend ejecuta pruebas estrictas. Si algún test falla, el pipeline aborta su ejecución inmediatamente, previniendo que código defectuoso llegue a producción. La estrategia se divide en:
+  * **Pruebas Unitarias (Capa de Servicio)**: Uso de `JUnit 5` y `Mockito` para aislar `TaskService` simulando el acceso a datos. Valida exhaustivamente la lógica de negocio y el manejo de excepciones personalizadas (como `TaskNotFoundException`).
+  * **Pruebas de Integración (Capa HTTP)**: Uso de `@SpringBootTest` y `MockMvc` para levantar el contexto de Spring, simular peticiones reales (ej. `POST /api/tasks`) y verificar de extremo a extremo los códigos de estado (ej. `201 Created`) y el mapeo correcto de JSON.
+* **Despliegue Cloud Ininterrumpido**: Una vez que el código supera las métricas de calidad, GitHub Actions coordina el despliegue automático hacia los servidores de **Render** (API y Frontend), enlazándose de manera segura con la base de datos alojada en **Aiven**.
+
 ## 🚀 Instrucciones de Despliegue Rápido
+
+> **💡 Nota:** Si solo deseas evaluar la aplicación como usuario, no es necesario levantar la infraestructura local. Puedes acceder directamente al **[entorno de producción público desplegado en Render](https://app-tasks-frontend.onrender.com)**.
 
 ### Requisitos Previos
 Disponer de Docker Desktop en ejecución.
