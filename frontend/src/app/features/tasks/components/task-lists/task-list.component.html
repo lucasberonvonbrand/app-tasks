@@ -22,7 +22,7 @@
 
   <!-- Mensajes de estado -->
   <div *ngIf="isLoading" class="status-message">
-    <p>⏳ Conectando con el servidor...</p>
+    <p><span class="spinner">⏳</span> Conectando con el servidor...</p>
   </div>
   <div *ngIf="connectionError" class="status-message error">
     <p>❌ No se pudo conectar al servidor. Es posible que siga iniciando.</p>
